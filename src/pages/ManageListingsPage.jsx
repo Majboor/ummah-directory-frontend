@@ -216,10 +216,10 @@ const ManageListingsPage = () => {
   if (!username) {
     return (
       <div className="min-h-screen bg-[#EFE9DE] text-[#1F3E3D]">
-        <main className="mx-auto max-w-3xl px-6 py-16 md:px-12">
+        <main className="mx-auto max-w-3xl px-4 py-12 md:px-12 md:py-16">
           <a href="/" className="font-serifDisplay text-4xl font-light">Ummah Directory</a>
           <section className="mt-10 border border-[#1F3E3D]/14 bg-[#F8F4EC] p-7">
-            <h1 className="font-serifDisplay text-5xl font-light">Manage listings</h1>
+            <h1 className="font-serifDisplay text-4xl font-light md:text-5xl">Manage listings</h1>
             <p className="mt-4 leading-7 text-[#1F3E3D]/68">Login first, then you can edit, hide, or delete listings created from your profile.</p>
             <a href="/profile" className="mt-6 inline-block bg-[#1F3E3D] px-5 py-3 text-sm text-white">Login or create profile</a>
           </section>
@@ -231,10 +231,10 @@ const ManageListingsPage = () => {
 
   return (
     <div className="min-h-screen bg-[#EFE9DE] text-[#1F3E3D]">
-      <header className="border-b border-[#1F3E3D]/12 px-6 py-5 md:px-12">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
+      <header className="border-b border-[#1F3E3D]/12 px-4 py-5 md:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <a href="/" className="font-serifDisplay text-3xl font-light">Ummah Directory</a>
-          <nav className="flex items-center gap-5 text-sm text-[#1F3E3D]/70">
+          <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#1F3E3D]/70">
             <a href="/profile" className="hover:text-[#1F3E3D]">Profile</a>
             <a href="/add-listing" className="hover:text-[#1F3E3D]">Add listing</a>
             <a href="/search" className="hover:text-[#1F3E3D]">Search</a>
@@ -242,7 +242,7 @@ const ManageListingsPage = () => {
         </div>
       </header>
 
-      <main className="px-6 py-10 md:px-12">
+      <main className="px-4 py-8 md:px-12 md:py-10">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[340px_1fr]">
           <aside className="h-fit border border-[#1F3E3D]/14 bg-[#F8F4EC] p-5 lg:sticky lg:top-6">
             <div className="flex items-end justify-between gap-4 border-b border-[#1F3E3D]/12 pb-4">
@@ -275,12 +275,12 @@ const ManageListingsPage = () => {
             </div>
           </aside>
 
-          <section className="border border-[#1F3E3D]/14 bg-[#F8F4EC] p-6 md:p-8">
+          <section className="border border-[#1F3E3D]/14 bg-[#F8F4EC] p-4 md:p-8">
             {activeListing ? (
               <form onSubmit={save} className="space-y-6">
                 <div className="flex flex-col gap-4 border-b border-[#1F3E3D]/12 pb-5 md:flex-row md:items-start md:justify-between">
                   <div>
-                    <h2 className="font-serifDisplay text-5xl font-light">{activeListing.title}</h2>
+                    <h2 className="font-serifDisplay text-3xl font-light md:text-5xl">{activeListing.title}</h2>
                     <p className="mt-2 text-sm text-[#1F3E3D]/58">Edit the public listing details.</p>
                   </div>
                   <a href={`/listing/${activeListing.slug || activeListing.id}`} className="w-fit border border-[#1F3E3D]/18 px-4 py-2 text-sm">View page</a>
@@ -332,7 +332,7 @@ const ManageListingsPage = () => {
                 </Field>
 
                 {form.image && (
-                  <figure className="h-72 overflow-hidden bg-[#1F3E3D]">
+                  <figure className="h-52 overflow-hidden bg-[#1F3E3D] md:h-72">
                     <SafeImage src={form.image} alt={form.title || 'Listing preview'} className="h-full w-full object-cover" />
                   </figure>
                 )}
@@ -344,7 +344,7 @@ const ManageListingsPage = () => {
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <p className="text-sm text-[#1F3E3D]/64">{message}</p>
-                  <div className="flex gap-3">
+                  <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                     <button type="button" onClick={remove} disabled={saving} className="border border-[#8A2D23]/30 px-5 py-3 text-sm text-[#8A2D23] disabled:opacity-50">Delete</button>
                     <button type="submit" disabled={saving} className="bg-[#1F3E3D] px-5 py-3 text-sm text-white disabled:opacity-50">{saving ? 'Saving...' : 'Save changes'}</button>
                   </div>
@@ -352,7 +352,7 @@ const ManageListingsPage = () => {
               </form>
             ) : (
               <div className="py-16 text-center">
-                <h2 className="font-serifDisplay text-5xl font-light">No listing selected</h2>
+                <h2 className="font-serifDisplay text-4xl font-light md:text-5xl">No listing selected</h2>
                 <p className="mt-3 text-[#1F3E3D]/62">Choose a listing from the left, or create a new one.</p>
                 <a href="/add-listing" className="mt-6 inline-block bg-[#1F3E3D] px-5 py-3 text-sm text-white">Add listing</a>
               </div>

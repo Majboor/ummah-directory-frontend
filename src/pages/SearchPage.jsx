@@ -86,7 +86,7 @@ const SearchPage = () => {
 
   return (
     <div className="min-h-screen bg-[#E3E7E0] text-[#2A3324]">
-      <main className="mx-auto grid max-w-7xl gap-8 px-6 py-10 md:px-12 md:py-14 lg:grid-cols-[300px_1fr]">
+      <main className="mx-auto grid max-w-7xl gap-6 px-4 py-8 md:gap-8 md:px-12 md:py-14 lg:grid-cols-[300px_1fr]">
         <aside className="h-fit border border-[#C4CFC0] bg-[#D5DBD1] p-5 lg:sticky lg:top-6">
           <a href="/" className="font-editorial text-3xl">Ummah Directory</a>
           <form className="mt-6 space-y-4">
@@ -136,9 +136,9 @@ const SearchPage = () => {
         </aside>
 
         <section>
-          <nav className="border-b border-[#C4CFC0] pb-6 text-sm uppercase tracking-[0.22em] text-[#2A3324]/65"><a href="/">Home</a> / Search</nav>
-          <section className="py-12">
-            <h1 className="font-editorial text-6xl leading-none md:text-8xl">Search the directory.</h1>
+          <nav className="border-b border-[#C4CFC0] pb-5 text-xs uppercase tracking-[0.18em] text-[#2A3324]/65 md:pb-6 md:text-sm md:tracking-[0.22em]"><a href="/">Home</a> / Search</nav>
+          <section className="py-8 md:py-12">
+            <h1 className="font-editorial text-4xl leading-none sm:text-6xl md:text-8xl">Search the directory.</h1>
             <p className="mt-6 max-w-2xl text-[#2A3324]/66">
               {smartData?.answer || 'Results are ranked by service words, category intent, location hints, and available contact details.'}
             </p>
@@ -163,7 +163,7 @@ const SearchPage = () => {
                     )}
                     <span>{listing.region}</span>
                   </div>
-                  <h2 className="mt-2 font-editorial text-4xl leading-tight">{listing.title}</h2>
+                  <h2 className="mt-2 font-editorial text-2xl leading-tight md:text-4xl">{listing.title}</h2>
                   <p className="mt-3 text-sm leading-7 text-[#2A3324]/66">{listing.summary}</p>
                   <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-[#2A3324]/58">
                     <span>{listing.phone && listing.phone !== 'Not listed' ? 'Phone listed' : 'No phone listed'}</span>

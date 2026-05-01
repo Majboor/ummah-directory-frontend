@@ -96,7 +96,7 @@ const ChatbotWidget = ({ pageContext = {} }) => {
   return (
     <div className="fixed inset-x-3 bottom-3 z-[80] text-[#1F3E3D] md:inset-x-auto md:bottom-5 md:right-5">
       {open && (
-        <div className="mb-3 max-h-[calc(100vh-6.5rem)] w-full overflow-hidden border border-[#1F3E3D]/18 bg-[#F8F4EC] shadow-[0_8px_24px_rgba(31,62,61,0.18)] md:w-[min(380px,calc(100vw-40px))]">
+        <div className="mb-3 max-h-[calc(100svh-6.5rem)] w-full overflow-hidden border border-[#1F3E3D]/18 bg-[#F8F4EC] shadow-[0_8px_24px_rgba(31,62,61,0.18)] md:w-[min(380px,calc(100vw-40px))]">
           <div className="flex items-center justify-between border-b border-[#1F3E3D]/12 px-4 py-3">
             <div>
               <div className="font-oswald text-xl uppercase leading-none tracking-tight">Directory assistant</div>
@@ -105,7 +105,7 @@ const ChatbotWidget = ({ pageContext = {} }) => {
             <button className="text-sm text-[#1F3E3D]/60 hover:text-[#1F3E3D]" onClick={() => setOpen(false)}>Close</button>
           </div>
 
-          <div className="max-h-[calc(100vh-15rem)] space-y-3 overflow-y-auto px-3 py-3 md:max-h-[420px] md:px-4 md:py-4">
+          <div className="max-h-[calc(100svh-15rem)] space-y-3 overflow-y-auto px-3 py-3 md:max-h-[420px] md:px-4 md:py-4">
             <div className="flex flex-wrap gap-2">
               {starters.map(starter => (
                 <button

@@ -66,10 +66,10 @@ const ProfilePage = ({ username: routeUsername }) => {
   if (!currentUser && !routeUsername) {
     return (
       <div className="min-h-screen bg-[#EFE9DE] text-[#1F3E3D]">
-        <main className="mx-auto grid max-w-5xl gap-8 px-6 py-14 md:grid-cols-[0.8fr_1.2fr] md:px-12">
+        <main className="mx-auto grid max-w-5xl gap-8 px-4 py-10 md:grid-cols-[0.8fr_1.2fr] md:px-12 md:py-14">
           <section>
             <a href="/" className="font-serifDisplay text-4xl font-light">Ummah Directory</a>
-            <h1 className="mt-10 font-serifDisplay text-6xl font-light leading-none">Create your local profile.</h1>
+            <h1 className="mt-8 font-serifDisplay text-4xl font-light leading-none sm:text-5xl md:mt-10 md:text-6xl">Create your local profile.</h1>
             <p className="mt-6 leading-8 text-[#1F3E3D]/68">Like listings, mark places as visited, leave comments, and build a public community trail of the businesses and places you have checked out.</p>
           </section>
           <form onSubmit={submit} className="border border-[#1F3E3D]/14 bg-[#F8F4EC] p-6">
@@ -93,15 +93,15 @@ const ProfilePage = ({ username: routeUsername }) => {
 
   return (
     <div className="min-h-screen bg-[#EFE9DE] text-[#1F3E3D]">
-      <main className="mx-auto max-w-7xl px-6 py-10 md:px-12">
-        <div className="flex items-start justify-between border-b border-[#1F3E3D]/14 pb-6">
+      <main className="mx-auto max-w-7xl px-4 py-8 md:px-12 md:py-10">
+        <div className="flex flex-col items-start justify-between gap-4 border-b border-[#1F3E3D]/14 pb-6 sm:flex-row">
           <a href="/" className="font-serifDisplay text-4xl font-light">Ummah Directory</a>
           {!routeUsername && <button onClick={logout} className="border border-[#1F3E3D]/18 px-4 py-2 text-sm">Logout</button>}
         </div>
 
         <section className="grid gap-8 py-10 lg:grid-cols-[360px_1fr]">
           <aside className="border border-[#1F3E3D]/14 bg-[#F8F4EC] p-6">
-            <h1 className="font-serifDisplay text-5xl font-light">{profile?.user?.display_name || currentUser}</h1>
+            <h1 className="break-words font-serifDisplay text-4xl font-light md:text-5xl">{profile?.user?.display_name || currentUser}</h1>
             <p className="mt-3 text-sm text-[#1F3E3D]/60">@{profile?.user?.username || currentUser}</p>
             {!routeUsername && (
               <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
@@ -117,7 +117,7 @@ const ProfilePage = ({ username: routeUsername }) => {
                 ['Created', profile?.stats?.created_listings || 0],
               ].map(([label, value]) => (
                 <div key={label} className="border border-[#1F3E3D]/12 p-4">
-                  <div className="font-serifDisplay text-4xl">{value}</div>
+                  <div className="font-serifDisplay text-3xl md:text-4xl">{value}</div>
                   <div className="text-xs text-[#1F3E3D]/55">{label}</div>
                 </div>
               ))}
@@ -127,7 +127,7 @@ const ProfilePage = ({ username: routeUsername }) => {
           <section className="space-y-8">
             <div className="border border-[#1F3E3D]/14 bg-[#F8F4EC] p-6">
               <h2 className="font-serifDisplay text-4xl font-light">Visited map</h2>
-              <div className="mt-5 grid min-h-64 grid-cols-4 gap-2 bg-[#E7DED0] p-4 md:grid-cols-8">
+              <div className="mt-5 grid min-h-64 grid-cols-2 gap-2 bg-[#E7DED0] p-3 sm:grid-cols-4 md:grid-cols-8 md:p-4">
                 {['WA', 'NT', 'SA', 'QLD', 'NSW', 'ACT', 'VIC', 'TAS'].map(state => {
                   const count = visitedByState.find(([key]) => key === state)?.[1] || 0;
                   return (

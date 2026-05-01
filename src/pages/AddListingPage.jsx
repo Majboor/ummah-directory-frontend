@@ -66,12 +66,12 @@ const DraftProgressOverlay = ({ active, stepIndex, usePlaces }) => {
   const progress = Math.min(92, 18 + stepIndex * 12);
 
   return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[#151B18]/68 px-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto bg-[#151B18]/68 px-4 py-6 backdrop-blur-sm">
       <div className="w-full max-w-lg border border-[#1F3E3D]/18 bg-[#F8F4EC] text-[#1F3E3D] shadow-[0_18px_40px_rgba(0,0,0,0.22)]">
         <div className="border-b border-[#1F3E3D]/12 px-5 py-4">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="font-serifDisplay text-3xl font-light">Building the listing</h2>
+              <h2 className="font-serifDisplay text-2xl font-light md:text-3xl">Building the listing</h2>
               <p className="mt-2 text-sm leading-6 text-[#1F3E3D]/66">
                 {usePlaces
                   ? 'Live Google Maps enrichment can take a moment. Keep this open while we gather the richer fields.'
@@ -268,10 +268,10 @@ const AddListingPage = () => {
 
   return (
     <div className="min-h-screen bg-[#EFE9DE] text-[#1F3E3D]">
-      <header className="border-b border-[#1F3E3D]/12 px-6 py-5 md:px-12">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
+      <header className="border-b border-[#1F3E3D]/12 px-4 py-5 md:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <a href="/" className="font-serifDisplay text-3xl font-light">Ummah Directory</a>
-          <nav className="flex items-center gap-5 text-sm text-[#1F3E3D]/70">
+          <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#1F3E3D]/70">
             <a href="/" className="hover:text-[#1F3E3D]">Home</a>
             <a href="/search" className="hover:text-[#1F3E3D]">Search</a>
             <a href="/about" className="hover:text-[#1F3E3D]">About</a>
@@ -279,9 +279,9 @@ const AddListingPage = () => {
         </div>
       </header>
 
-      <main className="px-6 py-10 md:px-12">
+      <main className="px-4 py-8 md:px-12 md:py-10">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[360px_1fr]">
-          <aside className="h-fit border border-[#1F3E3D]/14 bg-[#F8F4EC] p-6 lg:sticky lg:top-6">
+          <aside className="h-fit border border-[#1F3E3D]/14 bg-[#F8F4EC] p-5 md:p-6 lg:sticky lg:top-6">
             <h1 className="font-serifDisplay text-4xl font-light">Add a listing</h1>
             <p className="mt-4 text-sm leading-7 text-[#1F3E3D]/66">
               Add the business details directly, or start with AI to draft the profile from a business name and location.
@@ -299,7 +299,7 @@ const AddListingPage = () => {
                 Use Google Maps place lookup when available
               </label>
               <div className="border border-[#1F3E3D]/12 bg-[#EFE9DE] p-3 text-xs leading-5 text-[#1F3E3D]/66">
-                Groq copy: {aiStatus.groq ? 'connected' : 'not connected'} · Apify place lookup: {aiStatus.apify ? 'connected' : 'missing APIFY_TOKEN'}
+                AI copy: {aiStatus.groq ? 'ready' : 'offline'} · Place lookup: {aiStatus.apify ? 'ready' : 'not connected'}
               </div>
               <button
                 type="button"
@@ -317,7 +317,7 @@ const AddListingPage = () => {
             </div>
           </aside>
 
-          <section className="border border-[#1F3E3D]/14 bg-[#F8F4EC] p-6 md:p-8">
+          <section className="border border-[#1F3E3D]/14 bg-[#F8F4EC] p-4 md:p-8">
             <form onSubmit={submit} className="space-y-7">
               <div className="grid gap-5 md:grid-cols-2">
                 <Field label="Business name">
@@ -365,7 +365,7 @@ const AddListingPage = () => {
               </Field>
 
               {form.image && (
-                <figure className="h-72 overflow-hidden bg-[#1F3E3D]">
+                <figure className="h-52 overflow-hidden bg-[#1F3E3D] md:h-72">
                   <SafeImage src={form.image} alt={form.title || 'Listing preview'} className="h-full w-full object-cover" />
                 </figure>
               )}
@@ -373,7 +373,7 @@ const AddListingPage = () => {
               <section className="border-t border-[#1F3E3D]/12 pt-7">
                 <h2 className="font-serifDisplay text-3xl font-light">Place data</h2>
                 <p className="mt-2 text-sm leading-6 text-[#1F3E3D]/62">
-                  These fields are filled from Apify Google Maps lookup when `APIFY_TOKEN` is configured.
+                  These fields are filled from live place lookup when available.
                 </p>
 
                 <div className="mt-5 grid gap-5 md:grid-cols-2">
@@ -406,9 +406,9 @@ const AddListingPage = () => {
                 {form.opening_hours?.length > 0 && (
                   <div className="mt-5 border border-[#1F3E3D]/12">
                     {form.opening_hours.map(item => (
-                      <div key={`${item.day}-${item.hours}`} className="flex justify-between gap-4 border-b border-[#1F3E3D]/10 px-4 py-3 text-sm last:border-b-0">
+                      <div key={`${item.day}-${item.hours}`} className="flex flex-col gap-1 border-b border-[#1F3E3D]/10 px-4 py-3 text-sm last:border-b-0 sm:flex-row sm:justify-between sm:gap-4">
                         <span className="text-[#1F3E3D]/58">{item.day || 'Hours'}</span>
-                        <span className="text-right">{item.hours || item}</span>
+                        <span className="sm:text-right">{item.hours || item}</span>
                       </div>
                     ))}
                   </div>
@@ -437,7 +437,7 @@ const AddListingPage = () => {
 
               <div className="flex flex-col gap-3 border-t border-[#1F3E3D]/12 pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="text-sm text-[#1F3E3D]/66">{message}</div>
-                <button type="submit" disabled={submitting} className="bg-[#9B7C43] px-5 py-3 text-sm text-white disabled:opacity-50">
+                <button type="submit" disabled={submitting} className="w-full bg-[#9B7C43] px-5 py-3 text-sm text-white disabled:opacity-50 sm:w-auto">
                   {submitting ? 'Adding...' : 'Add listing'}
                 </button>
               </div>

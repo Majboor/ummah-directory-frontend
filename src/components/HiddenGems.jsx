@@ -48,7 +48,7 @@ const HiddenGems = () => {
     };
   }, []);
 
-  const gems = listings;
+  const gems = listings.filter(item => item.image).slice(0, 32);
 
   return (
     <div className="relative z-20 h-auto w-full bg-[#F4F4F5] text-black md:h-[500vh]" id="hidden-gems-section" ref={sectionRef}>
@@ -66,7 +66,7 @@ const HiddenGems = () => {
             </div>
           </div>
 
-          <div className="hide-scrollbar flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain pl-6 will-change-transform md:overflow-visible md:pl-12" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)', paddingRight: '1.5rem', paddingBottom: '1rem', width: 'max-content', maxWidth: '100vw' }} id="horizontal-scroll-container" ref={containerRef}>
+          <div className="hide-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain pl-6 will-change-transform md:w-max md:overflow-visible md:pl-12" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)', paddingRight: '1.5rem', paddingBottom: '1rem' }} id="horizontal-scroll-container" ref={containerRef}>
             {gems.map((gem, index) => (
               <a key={gem.slug} href={`/listing/${gem.slug}`} style={{ width: 'clamp(200px, 55vw, 300px)', height: 'clamp(320px, 45vh, 480px)', flexShrink: 0 }} aria-label={`Open ${gem.title}`} className="relative block snap-start overflow-hidden rounded-2xl border border-black/5 bg-[#1A1A1A] shadow-xl group cursor-pointer">
                 <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105" style={{ backgroundImage: `url('${gem.image || FALLBACK_IMAGE}'), url('${FALLBACK_IMAGE}')` }}></div>
