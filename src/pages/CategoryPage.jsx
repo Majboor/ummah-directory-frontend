@@ -4,10 +4,10 @@ import { categories, getCategory, getListingsByCategory, listings as allListings
 import SafeImage from '../components/SafeImage';
 
 const MetaLine = ({ left, middle, right }) => (
-  <div className="flex items-center justify-between border-y border-[#C4CFC0] py-4 text-xs uppercase tracking-[0.22em] text-[#2A3324]/68 md:text-sm">
+  <div className="flex flex-wrap items-center justify-between gap-3 border-y border-[#C4CFC0] py-4 text-[10px] uppercase tracking-[0.16em] text-[#2A3324]/68 md:text-sm md:tracking-[0.22em]">
     <span>{left}</span>
     <span className="hidden sm:block">{middle}</span>
-    <span>{right}</span>
+    <span className="max-w-full sm:text-right">{right}</span>
   </div>
 );
 
@@ -22,13 +22,13 @@ const SectionKicker = ({ children }) => (
 );
 
 const EditorialCard = ({ number, title, text, href = '#', image, type = 'Guide', items = [] }) => (
-  <a href={href} className="page-reveal group flex h-full flex-col border-t-2 border-[#2A3324] bg-[#D5DBD1] p-6 transition-colors hover:bg-[#CDD5C8] md:p-8">
+  <a href={href} className="page-reveal group flex h-full flex-col border-t-2 border-[#2A3324] bg-[#D5DBD1] p-4 transition-colors hover:bg-[#CDD5C8] md:p-8">
     <div className="flex items-start justify-between gap-6">
       <span className="text-base text-[#2A3324]/48">{number}</span>
       <span className="text-xs uppercase tracking-[0.22em] text-[#2A3324]/52">{type}</span>
     </div>
     {image && (
-      <div className="mt-7 h-44 overflow-hidden bg-[#2A3324]">
+      <div className="mt-6 h-36 overflow-hidden bg-[#2A3324] md:mt-7 md:h-44">
         <SafeImage src={image} alt={title} className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-105" />
       </div>
     )}
@@ -42,8 +42,8 @@ const EditorialCard = ({ number, title, text, href = '#', image, type = 'Guide',
         ))}
       </div>
     )}
-    <h3 className="mt-7 font-editorial text-3xl font-normal leading-tight tracking-tight text-[#2A3324] md:text-4xl">{title}</h3>
-    <p className="mt-6 text-base leading-7 text-[#2A3324]/70">{text}</p>
+    <h3 className="mt-6 font-editorial text-2xl font-normal leading-tight tracking-tight text-[#2A3324] md:mt-7 md:text-4xl">{title}</h3>
+    <p className="mt-4 text-sm leading-7 text-[#2A3324]/70 md:mt-6 md:text-base">{text}</p>
     <div className="mt-auto pt-8"><ArrowButton dark /></div>
   </a>
 );
@@ -51,7 +51,7 @@ const EditorialCard = ({ number, title, text, href = '#', image, type = 'Guide',
 const ListingArchiveRow = ({ listing, index }) => (
   <a href={`/listing/${listing.slug}`} className="page-reveal group grid border-t border-[#C4CFC0] py-6 md:grid-cols-[90px_220px_minmax(0,1fr)_140px] md:items-center md:gap-8">
     <div className="mb-4 text-sm text-[#2A3324]/48 md:mb-0">{String(index + 1).padStart(2, '0')}</div>
-    <div className="h-52 overflow-hidden bg-[#2A3324] md:h-32">
+    <div className="h-44 overflow-hidden bg-[#2A3324] md:h-32">
       <SafeImage src={listing.image} alt={listing.title} className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
     </div>
     <div className="mt-5 md:mt-0">
@@ -66,11 +66,11 @@ const ListingArchiveRow = ({ listing, index }) => (
         <span>{listing.duration}</span>
         <span>{listing.guests}</span>
       </div>
-      <h3 className="font-editorial text-3xl font-normal leading-tight tracking-tight text-[#2A3324] md:text-4xl">{listing.title}</h3>
+      <h3 className="font-editorial text-2xl font-normal leading-tight tracking-tight text-[#2A3324] md:text-4xl">{listing.title}</h3>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-[#2A3324]/68">{listing.summary}</p>
     </div>
     <div className="mt-5 flex items-end justify-between gap-4 md:mt-0 md:flex-col md:items-end">
-      <div className="text-right">
+      <div className="text-left md:text-right">
         <div className="text-xs uppercase tracking-[0.18em] text-[#2A3324]/45">Category</div>
         <div className="mt-1 font-editorial text-2xl text-[#2A3324]">{listing.price}</div>
       </div>
@@ -202,14 +202,15 @@ const CategoryPage = ({ slug }) => {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <header className="flex items-start justify-between border-b border-[#C4CFC0] py-6">
+        <header className="flex items-start justify-between border-b border-[#C4CFC0] py-5 md:py-6">
           <nav className="flex flex-wrap gap-x-4 gap-y-2 text-sm uppercase tracking-[0.22em] text-[#2A3324]/70 md:text-base">
             <a href="/" className="transition-colors hover:text-[#2A3324]">Home</a>
             <span>/</span>
+            <span className="text-[#2A3324] sm:hidden">{category.shortTitle}</span>
             {categories.map(item => (
               <React.Fragment key={item.slug}>
-                <a href={`/category/${item.slug}`} className={`transition-colors hover:text-[#2A3324] ${item.slug === category.slug ? 'text-[#2A3324]' : ''}`}>{item.shortTitle}</a>
-                <span className="last:hidden">/</span>
+                <a href={`/category/${item.slug}`} className={`hidden transition-colors hover:text-[#2A3324] sm:inline ${item.slug === category.slug ? 'text-[#2A3324]' : ''}`}>{item.shortTitle}</a>
+                <span className="hidden last:hidden sm:inline">/</span>
               </React.Fragment>
             ))}
           </nav>
@@ -219,9 +220,9 @@ const CategoryPage = ({ slug }) => {
         </header>
 
         <main>
-          <section className="relative pb-12 pt-14 md:pb-16 md:pt-24">
-            <div className="relative z-10 mb-12 flex flex-col justify-between gap-10 md:flex-row md:items-end">
-              <h1 className="page-reveal w-full font-editorial text-6xl font-normal leading-none tracking-tight sm:text-7xl md:w-3/4 md:text-8xl lg:text-9xl">
+          <section className="relative pb-10 pt-10 md:pb-16 md:pt-24">
+            <div className="relative z-10 mb-10 flex flex-col justify-between gap-8 md:mb-12 md:flex-row md:items-end md:gap-10">
+              <h1 className="page-reveal w-full font-editorial text-[3.15rem] font-normal leading-none tracking-tight sm:text-7xl md:w-3/4 md:text-8xl lg:text-9xl">
                 {category.title.split(' ')[0]} <br />
                 <span className="italic">{category.title.split(' ').slice(1).join(' ') || 'Directory'}</span>
                 <span className="hidden h-[2px] w-24 bg-[#2A3324] align-middle md:mb-4 md:ml-4 md:inline-block"></span> Guide
@@ -230,7 +231,7 @@ const CategoryPage = ({ slug }) => {
               <div className="page-reveal md:w-1/4 md:text-right">
                 <a href="#archive" className="inline-block border-b border-[#2A3324] pb-1 text-sm uppercase tracking-[0.22em] transition-opacity hover:opacity-70">Browse Listings</a>
                 <a href={`/listing/${leadListing.slug}`} className="group mt-7 block text-left md:text-right">
-                  <div className="ml-auto h-36 w-44 overflow-hidden bg-[#2A3324] md:h-40 md:w-52">
+                  <div className="h-32 w-full max-w-xs overflow-hidden bg-[#2A3324] md:ml-auto md:h-40 md:w-52">
                     <SafeImage src={leadListing.image} alt={leadListing.title} className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
                   </div>
                   <p className="mt-4 text-sm leading-6 text-[#2A3324]/70">Featured listing: {leadListing.title}. {leadListing.location}.</p>
@@ -241,7 +242,7 @@ const CategoryPage = ({ slug }) => {
             <MetaLine left={category.climate} middle={`${categoryListings.length} directory listings`} right={category.bestFor} />
 
             <a href={`/listing/${leadListing.slug}`} className="page-reveal group mt-4 block">
-              <div className="relative h-[420px] overflow-hidden bg-[#2A3324] md:h-[640px] lg:h-[720px]">
+              <div className="relative h-[300px] overflow-hidden bg-[#2A3324] sm:h-[420px] md:h-[640px] lg:h-[720px]">
                 <SafeImage
                   src={category.image}
                   alt={category.title}
@@ -251,44 +252,44 @@ const CategoryPage = ({ slug }) => {
                   data-critical-image="true"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#2A3324]/36 via-transparent to-transparent"></div>
-                <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between text-[#E3E7E0]">
+                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between text-[#E3E7E0] md:bottom-5 md:left-5 md:right-5">
                   <div>
                     <SectionKicker>Featured category</SectionKicker>
-                    <p className="mt-2 max-w-xl text-lg leading-7 text-[#E3E7E0]/88">{category.description}</p>
+                    <p className="mt-2 max-w-xl text-sm leading-6 text-[#E3E7E0]/88 md:text-lg md:leading-7">{category.description}</p>
                   </div>
                   <span className="hidden border-b border-[#E3E7E0] pb-1 text-sm uppercase tracking-[0.2em] md:block">Open first listing</span>
                 </div>
               </div>
             </a>
 
-            <div className="flex justify-between py-3 text-sm text-[#2A3324]/68">
+            <div className="flex justify-between gap-4 py-3 text-xs text-[#2A3324]/68 md:text-sm">
               <span>Ummah Category Journal</span>
               <span>{category.title}</span>
             </div>
           </section>
 
-          <section className="border-t border-[#C4CFC0] py-16 md:py-24">
+          <section className="border-t border-[#C4CFC0] py-10 md:py-24">
             <div className="grid gap-12 md:grid-cols-12">
               <div className="page-reveal md:col-span-8">
-                <h2 className="font-editorial text-4xl font-normal leading-tight tracking-tight sm:text-5xl md:text-6xl">
+                <h2 className="font-editorial text-3xl font-normal leading-tight tracking-tight sm:text-5xl md:text-6xl">
                   {category.description} This page works like a compact community desk: category clusters, contact notes, business profiles, and grouped listings gathered in one place.
                 </h2>
                 <a href="#archive" className="mt-8 inline-block border-b border-[#2A3324] pb-1 text-sm uppercase tracking-[0.22em] transition-opacity hover:opacity-70">Browse listings</a>
               </div>
               <div className="page-reveal flex flex-col justify-between gap-8 md:col-span-4">
-                <p className="text-lg leading-8 text-[#2A3324]/78">Use the page like a clean directory index: scan the subcategory clusters first, then compare listings by service type, address, phone availability, email availability, and profile details.</p>
-                <div className="h-52 overflow-hidden bg-[#2A3324]">
+                <p className="text-base leading-7 text-[#2A3324]/78 md:text-lg md:leading-8">Use the page like a clean directory index: scan the subcategory clusters first, then compare listings by service type, address, phone availability, email availability, and profile details.</p>
+                <div className="h-44 overflow-hidden bg-[#2A3324] md:h-52">
                   <SafeImage src={leadListing.gallery?.[0] || leadListing.image} alt={leadListing.title} className="h-full w-full object-cover" />
                 </div>
               </div>
             </div>
           </section>
 
-          <section className="border-t border-[#C4CFC0] py-16 md:py-24">
+          <section className="border-t border-[#C4CFC0] py-10 md:py-24">
             <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
               <div>
                 <SectionKicker>Community desk</SectionKicker>
-                <h2 className="mt-5 font-editorial text-4xl font-normal leading-tight tracking-tight md:text-6xl">Advice, articles, and service notes.</h2>
+                <h2 className="mt-4 font-editorial text-3xl font-normal leading-tight tracking-tight md:mt-5 md:text-6xl">Advice, articles, and service notes.</h2>
               </div>
               <a href="#archive" className="border-b border-[#2A3324] pb-1 text-sm uppercase tracking-[0.22em] transition-opacity hover:opacity-70">All listings</a>
             </div>
@@ -300,10 +301,10 @@ const CategoryPage = ({ slug }) => {
             </div>
           </section>
 
-          <section className="border-t border-[#C4CFC0] py-16 md:py-24">
-            <div className="grid gap-16 lg:grid-cols-2">
+          <section className="border-t border-[#C4CFC0] py-10 md:py-24">
+            <div className="grid gap-10 md:gap-16 lg:grid-cols-2">
               <div className="page-reveal flex flex-col justify-between">
-                <p className="mb-12 text-lg leading-8 text-[#2A3324]/78 lg:pr-12">The page groups repeated brand families so multi-location businesses are easier to browse without making the page feel repetitive.</p>
+                <p className="mb-8 text-base leading-7 text-[#2A3324]/78 md:mb-12 md:text-lg md:leading-8 lg:pr-12">The page groups repeated brand families so multi-location businesses are easier to browse without making the page feel repetitive.</p>
                 <div className="grid grid-cols-3 gap-2">
                   {imageStrip.map(item => (
                     <a key={item.image} href={`/listing/${item.slug}`} className="h-28 overflow-hidden bg-[#2A3324] md:h-32">
@@ -315,12 +316,12 @@ const CategoryPage = ({ slug }) => {
 
               <div className="page-reveal">
                 <SectionKicker>Quick guide</SectionKicker>
-                <h2 className="mt-5 font-editorial text-4xl font-normal leading-tight tracking-tight md:text-5xl">What to know before choosing.</h2>
-                <div className="mt-10 text-lg">
+                <h2 className="mt-4 font-editorial text-3xl font-normal leading-tight tracking-tight md:mt-5 md:text-5xl">What to know before choosing.</h2>
+                <div className="mt-8 text-base md:mt-10 md:text-lg">
                   {quickNotes.map(([label, value]) => (
-                    <div key={label} className="flex justify-between gap-8 border-t border-[#C4CFC0] py-5 last:border-b">
+                    <div key={label} className="flex flex-col gap-2 border-t border-[#C4CFC0] py-4 last:border-b sm:flex-row sm:justify-between sm:gap-8 md:py-5">
                       <span className="text-[#2A3324]/68">{label}</span>
-                      <span className="max-w-xs text-right font-normal">{value}</span>
+                      <span className="max-w-xs font-normal sm:text-right">{value}</span>
                     </div>
                   ))}
                 </div>
@@ -328,11 +329,11 @@ const CategoryPage = ({ slug }) => {
             </div>
           </section>
 
-          <section id="archive" className="border-t border-[#C4CFC0] py-16 md:py-24">
-            <div className="mb-10 flex items-end justify-between gap-8">
+          <section id="archive" className="border-t border-[#C4CFC0] py-10 md:py-24">
+            <div className="mb-8 flex items-end justify-between gap-8 md:mb-10">
               <div>
                 <SectionKicker>Business listings</SectionKicker>
-                <h2 className="mt-5 font-editorial text-5xl font-normal leading-none tracking-tight md:text-7xl">Listings in this category.</h2>
+                <h2 className="mt-4 font-editorial text-4xl font-normal leading-none tracking-tight md:mt-5 md:text-7xl">Listings in this category.</h2>
               </div>
               <div className="hidden gap-2 md:flex">
                 <button className="bg-[#2A3324] p-2 text-[#E3E7E0] transition-colors hover:bg-[#5C715E]" aria-label="Previous"><iconify-icon icon="solar:arrow-left-linear" class="text-xl"></iconify-icon></button>

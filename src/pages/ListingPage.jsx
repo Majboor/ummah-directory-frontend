@@ -10,9 +10,9 @@ const GuideLabel = ({ children, light = false }) => (
 );
 
 const FactRow = ({ label, value }) => (
-  <div className="grid grid-cols-[112px_1fr] gap-4 border-b border-[#1F3E3D]/12 py-3 text-sm last:border-b-0">
+  <div className="grid gap-1 border-b border-[#1F3E3D]/12 py-3 text-sm last:border-b-0 sm:grid-cols-[112px_1fr] sm:gap-4">
     <div className="text-[#1F3E3D]/48">{label}</div>
-    <div className="text-[#1F3E3D]/82">{value}</div>
+    <div className="break-words text-[#1F3E3D]/82">{value}</div>
   </div>
 );
 
@@ -39,14 +39,14 @@ const ContactButton = ({ href, children, disabled = false }) => {
 };
 
 const StoryBlock = ({ block, reversed = false }) => (
-  <section className={`page-reveal grid gap-8 border-t border-[#1F3E3D]/12 pt-10 md:grid-cols-2 md:items-center ${reversed ? 'md:[&>div:first-child]:order-2' : ''}`}>
+  <section className={`page-reveal grid gap-6 border-t border-[#1F3E3D]/12 pt-8 md:grid-cols-2 md:items-center md:gap-8 md:pt-10 ${reversed ? 'md:[&>div:first-child]:order-2' : ''}`}>
     <div>
       <GuideLabel>{block.kicker}</GuideLabel>
-      <h2 className="mt-3 font-serifDisplay text-4xl font-light leading-tight text-[#1F3E3D] md:text-5xl">{block.title}</h2>
+      <h2 className="mt-3 font-serifDisplay text-3xl font-light leading-tight text-[#1F3E3D] md:text-5xl">{block.title}</h2>
       <p className="mt-5 text-base leading-8 text-[#1F3E3D]/72">{block.body}</p>
     </div>
     <figure className="overflow-hidden bg-[#0B101A]">
-      <SafeImage src={block.image} alt={block.title} className="h-[340px] w-full object-cover transition-transform duration-[1600ms] hover:scale-105 md:h-[460px]" />
+      <SafeImage src={block.image} alt={block.title} className="h-64 w-full object-cover transition-transform duration-[1600ms] hover:scale-105 md:h-[460px]" />
     </figure>
   </section>
 );
@@ -177,7 +177,7 @@ const ListingPage = ({ slug }) => {
 
   return (
     <div className="min-h-screen bg-[#EFE9DE] text-[#1F3E3D]" ref={revealRef}>
-      <header className="relative min-h-screen overflow-hidden bg-[#0B101A] text-white">
+      <header className="relative min-h-[100svh] overflow-hidden bg-[#0B101A] text-white">
         <SafeImage
           src={listing.image}
           alt={listing.title}
@@ -190,7 +190,7 @@ const ListingPage = ({ slug }) => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/4 to-black/42"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/18 via-transparent to-black/8"></div>
 
-        <nav className="absolute left-0 right-0 top-0 z-30 flex items-center justify-between px-6 py-7 md:px-12 lg:px-14">
+        <nav className="absolute left-0 right-0 top-0 z-30 hidden items-center justify-between px-6 py-7 md:flex md:px-12 lg:px-14">
           <a href="/" className="font-serifDisplay text-2xl font-light tracking-wide text-white md:text-4xl">Ummah.</a>
           <div className="hidden items-center gap-7 text-sm text-white/82 md:flex">
             <a href="/" className="transition-colors hover:text-white">Home</a>
@@ -200,10 +200,10 @@ const ListingPage = ({ slug }) => {
           </div>
         </nav>
 
-        <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pb-20 pt-28 md:px-12 lg:px-14">
+        <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-4 pb-12 pt-28 md:min-h-screen md:px-12 md:pb-20 lg:px-14">
           <div className="page-reveal mx-auto max-w-5xl text-center">
             <GuideLabel light>{listing.region} directory guide</GuideLabel>
-            <h1 className="mt-8 font-serifDisplay text-5xl font-light italic leading-[1.08] tracking-wide text-white md:text-7xl lg:text-8xl">
+            <h1 className="mt-6 font-serifDisplay text-[2.65rem] font-light italic leading-[1.08] tracking-wide text-white sm:text-5xl md:mt-8 md:text-7xl lg:text-8xl">
               {listing.title} in {listing.location}
             </h1>
             {listing.approvalBadge && (
@@ -213,7 +213,7 @@ const ListingPage = ({ slug }) => {
               </div>
             )}
             <div className="mx-auto mt-5 h-px max-w-xl bg-white/72"></div>
-            <p className="mx-auto mt-6 max-w-2xl text-base font-light leading-8 text-white/84 md:text-lg">{listing.summary}</p>
+            <p className="mx-auto mt-5 max-w-2xl text-sm font-light leading-7 text-white/84 md:mt-6 md:text-lg md:leading-8">{listing.summary}</p>
           </div>
         </div>
 
@@ -224,7 +224,7 @@ const ListingPage = ({ slug }) => {
       </header>
 
       <main>
-        <section className="bg-[#EFE9DE] px-6 py-12 md:px-12 lg:px-14">
+        <section className="bg-[#EFE9DE] px-4 py-8 md:px-12 md:py-12 lg:px-14">
           <div className="mx-auto grid max-w-7xl border-y border-[#1F3E3D]/18 md:grid-cols-4">
             {[
               ['Rating', `${listing.rating}/5`],
@@ -232,37 +232,37 @@ const ListingPage = ({ slug }) => {
               ['Contact', listing.status],
               ['Category', listing.region],
             ].map(([label, value]) => (
-              <div key={label} className="page-reveal border-b border-[#1F3E3D]/12 py-6 md:border-b-0 md:border-r md:px-8 md:last:border-r-0">
+              <div key={label} className="page-reveal border-b border-[#1F3E3D]/12 px-3 py-4 md:border-b-0 md:border-r md:px-8 md:py-6 md:last:border-r-0">
                 <div className="text-sm text-[#1F3E3D]/52">{label}</div>
-                <div className="mt-1 font-serifDisplay text-3xl font-light text-[#1F3E3D]">{value}</div>
+                <div className="mt-1 font-serifDisplay text-2xl font-light text-[#1F3E3D] md:text-3xl">{value}</div>
               </div>
             ))}
           </div>
         </section>
 
-        <section id="directory" className="px-6 pb-16 md:px-12 lg:px-14">
+        <section id="directory" className="px-4 pb-10 md:px-12 md:pb-16 lg:px-14">
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[minmax(0,1fr)_340px]">
-            <article className="space-y-12">
-              <section className="page-reveal border-t border-[#1F3E3D]/12 pt-10">
+            <article className="space-y-10 md:space-y-12">
+              <section className="page-reveal border-t border-[#1F3E3D]/12 pt-8 md:pt-10">
                 <div className="grid gap-4 sm:grid-cols-3">
                   {[
                     ['like', social.user_actions?.like ? 'Liked' : 'Like', social.counts?.likes || 0],
                     ['visited', social.user_actions?.visited ? 'Seen' : 'Mark seen', social.counts?.visited || 0],
                     ['share', 'Share', social.counts?.shares || 0],
                   ].map(([action, label, count]) => (
-                    <button key={action} onClick={() => markAction(action)} className="border border-[#1F3E3D]/14 bg-[#F8F4EC] px-5 py-4 text-left transition-colors hover:border-[#9B7C43]">
-                      <span className="block font-serifDisplay text-3xl font-light">{count}</span>
+                    <button key={action} onClick={() => markAction(action)} className="border border-[#1F3E3D]/14 bg-[#F8F4EC] px-4 py-3 text-left transition-colors hover:border-[#9B7C43] md:px-5 md:py-4">
+                      <span className="block font-serifDisplay text-2xl font-light md:text-3xl">{count}</span>
                       <span className="text-sm text-[#1F3E3D]/62">{label}</span>
                     </button>
                   ))}
                 </div>
               </section>
 
-              <section className="page-reveal border-t border-[#1F3E3D]/12 pt-10">
+              <section className="page-reveal border-t border-[#1F3E3D]/12 pt-8 md:pt-10">
                 <div className="grid gap-10 md:grid-cols-[0.8fr_1fr]">
                   <div>
                     <GuideLabel>Directory details</GuideLabel>
-                    <h2 className="mt-3 font-serifDisplay text-4xl font-light leading-tight md:text-5xl">The useful bits, without the brochure voice.</h2>
+                    <h2 className="mt-3 font-serifDisplay text-3xl font-light leading-tight md:text-5xl">The useful bits, without the brochure voice.</h2>
                     <p className="mt-5 leading-8 text-[#1F3E3D]/68">Opening times, access notes, tradeoffs, and nearby anchors come first so the page works like a real listing before it becomes a community story.</p>
                   </div>
                   <div className="bg-[#F8F4EC] p-6 md:p-8">
@@ -285,22 +285,22 @@ const ListingPage = ({ slug }) => {
               </section>
 
               {hasAddress && (
-                <section className="page-reveal border-t border-[#1F3E3D]/12 pt-10">
+                <section className="page-reveal border-t border-[#1F3E3D]/12 pt-8 md:pt-10">
                   <div className="grid gap-6 md:grid-cols-[0.72fr_1fr] md:items-start">
                     <div>
                       <GuideLabel>Map</GuideLabel>
-                      <h2 className="mt-3 font-serifDisplay text-4xl font-light leading-tight md:text-5xl">Location view</h2>
+                      <h2 className="mt-3 font-serifDisplay text-3xl font-light leading-tight md:text-5xl">Location view</h2>
                       <p className="mt-5 leading-8 text-[#1F3E3D]/68">Use the map as a quick orientation point, then confirm the address and opening hours directly with the business before travelling.</p>
                     </div>
                     <div className="overflow-hidden border border-[#1F3E3D]/12 bg-[#F8F4EC]">
                       <iframe
                         title={`${listing.title} map`}
                         src={listing.mapEmbedUrl}
-                        className="h-[360px] w-full border-0 md:h-[430px]"
+                        className="h-[260px] w-full border-0 md:h-[430px]"
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                       ></iframe>
-                      <div className="flex items-center justify-between gap-4 border-t border-[#1F3E3D]/12 px-5 py-4 text-sm">
+                      <div className="flex flex-col items-start gap-3 border-t border-[#1F3E3D]/12 px-4 py-4 text-sm sm:flex-row sm:items-center sm:justify-between md:px-5">
                         <span className="text-[#1F3E3D]/68">{listing.address}</span>
                         <a href={listing.mapDirectionsUrl} target="_blank" rel="noreferrer" className="shrink-0 border-b border-[#1F3E3D]/30 pb-1 text-[#1F3E3D] hover:text-[#9B7C43]">Open map</a>
                       </div>
@@ -309,25 +309,25 @@ const ListingPage = ({ slug }) => {
                 </section>
               )}
 
-              <section className="grid gap-8 border-t border-[#1F3E3D]/12 pt-10 md:grid-cols-2">
+              <section className="grid gap-8 border-t border-[#1F3E3D]/12 pt-8 md:grid-cols-2 md:pt-10">
                 <div className="page-reveal">
                   <GuideLabel>What's good</GuideLabel>
-                  <h2 className="mt-3 font-serifDisplay text-4xl font-light">Why shortlist it</h2>
+                  <h2 className="mt-3 font-serifDisplay text-3xl font-light md:text-4xl">Why shortlist it</h2>
                   <div className="mt-6"><TextList items={listing.good} /></div>
                 </div>
                 <div className="page-reveal">
                   <GuideLabel>Reality check</GuideLabel>
-                  <h2 className="mt-3 font-serifDisplay text-4xl font-light">What to know first</h2>
+                  <h2 className="mt-3 font-serifDisplay text-3xl font-light md:text-4xl">What to know first</h2>
                   <div className="mt-6"><TextList items={listing.bad} /></div>
                 </div>
               </section>
 
               {(listing.reviewSummary || listing.featuredReviews.length > 0 || listing.googleCategories.length > 0) && (
-                <section className="page-reveal border-t border-[#1F3E3D]/12 pt-10">
+                <section className="page-reveal border-t border-[#1F3E3D]/12 pt-8 md:pt-10">
                   <div className="grid gap-8 md:grid-cols-[0.72fr_1fr]">
                     <div>
                       <GuideLabel>Google place signals</GuideLabel>
-                      <h2 className="mt-3 font-serifDisplay text-4xl font-light leading-tight md:text-5xl">What the place data adds.</h2>
+                      <h2 className="mt-3 font-serifDisplay text-3xl font-light leading-tight md:text-5xl">What the place data adds.</h2>
                       <p className="mt-5 leading-8 text-[#1F3E3D]/68">When a listing is created from Google Maps data, this section keeps the practical signals visible without turning the page into a raw scrape dump.</p>
                     </div>
                     <div className="space-y-4">
@@ -355,22 +355,22 @@ const ListingPage = ({ slug }) => {
                 </section>
               )}
 
-              <section className="page-reveal border-t border-[#1F3E3D]/12 pt-10">
+              <section className="page-reveal border-t border-[#1F3E3D]/12 pt-8 md:pt-10">
                 <GuideLabel>Visual notes</GuideLabel>
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
                   {listing.gallery.map((image, index) => (
-                    <figure key={image} className={`overflow-hidden bg-[#0B101A] ${index === 0 ? 'sm:col-span-2 h-[360px] md:h-[540px]' : 'h-72'}`}>
+                    <figure key={image} className={`overflow-hidden bg-[#0B101A] ${index === 0 ? 'h-64 sm:col-span-2 sm:h-[360px] md:h-[540px]' : 'h-56 sm:h-72'}`}>
                       <SafeImage src={image} alt={`${listing.title} view ${index + 1}`} className="h-full w-full object-cover transition-transform duration-[1600ms] hover:scale-105" />
                     </figure>
                   ))}
                 </div>
               </section>
 
-              <section className="page-reveal border-t border-[#1F3E3D]/12 pt-10">
+              <section className="page-reveal border-t border-[#1F3E3D]/12 pt-8 md:pt-10">
                 <div className="grid gap-8 md:grid-cols-[0.72fr_1fr]">
                   <div>
                     <GuideLabel>Community comments</GuideLabel>
-                    <h2 className="mt-3 font-serifDisplay text-4xl font-light leading-tight md:text-5xl">Notes from people who opened this listing.</h2>
+                    <h2 className="mt-3 font-serifDisplay text-3xl font-light leading-tight md:text-5xl">Notes from people who opened this listing.</h2>
                     <p className="mt-5 leading-8 text-[#1F3E3D]/68">Local profiles can leave practical notes, questions, and visit context for other users.</p>
                   </div>
                   <div>
@@ -392,7 +392,7 @@ const ListingPage = ({ slug }) => {
             </article>
 
             <aside className="space-y-6 lg:sticky lg:top-8 lg:self-start">
-              <div className="page-reveal bg-[#1F3E3D] p-7 text-white">
+              <div className="page-reveal bg-[#1F3E3D] p-5 text-white md:p-7">
                 <GuideLabel light>At a glance</GuideLabel>
                 <h3 className="mt-3 font-serifDisplay text-3xl font-light">{listing.location}</h3>
                 <div className="mt-6 space-y-3 text-sm leading-7 text-white/74">
@@ -401,7 +401,7 @@ const ListingPage = ({ slug }) => {
                 </div>
               </div>
 
-              <div className="page-reveal bg-[#F8F4EC] p-7">
+              <div className="page-reveal bg-[#F8F4EC] p-5 md:p-7">
                 <GuideLabel>Opening times</GuideLabel>
                 <div className="mt-4">
                   {listing.openingTimes.map(item => {
@@ -411,14 +411,14 @@ const ListingPage = ({ slug }) => {
                 </div>
               </div>
 
-              <div className="page-reveal bg-[#F8F4EC] p-7">
+              <div className="page-reveal bg-[#F8F4EC] p-5 md:p-7">
                 <GuideLabel>Best for</GuideLabel>
                 <div className="mt-5 flex flex-wrap gap-x-4 gap-y-3 text-sm text-[#1F3E3D]/76">
                   {listing.bestFor.map(item => <span key={item}>{item}</span>)}
                 </div>
               </div>
 
-              <div className="page-reveal bg-[#F8F4EC] p-7">
+              <div className="page-reveal bg-[#F8F4EC] p-5 md:p-7">
                 <GuideLabel>Also nearby</GuideLabel>
                 <div className="mt-5"><TextList items={listing.nearby} /></div>
               </div>
@@ -426,14 +426,14 @@ const ListingPage = ({ slug }) => {
           </div>
         </section>
 
-        <section id="field-notes" className="border-t border-[#1F3E3D]/12 px-6 py-16 md:px-12 lg:px-14">
+        <section id="field-notes" className="border-t border-[#1F3E3D]/12 px-4 py-10 md:px-12 md:py-16 lg:px-14">
           <div className="mx-auto max-w-7xl space-y-12">
             <section className="page-reveal grid gap-8 md:grid-cols-[0.72fr_1fr] md:items-start">
               <div className="border-t border-[#1F3E3D]/18 pt-5">
                 <GuideLabel>Field notes</GuideLabel>
-                <h2 className="mt-4 font-serifDisplay text-4xl font-light leading-tight md:text-6xl">A directory entry that reads like a community guide.</h2>
+                <h2 className="mt-4 font-serifDisplay text-3xl font-light leading-tight md:text-6xl">A directory entry that reads like a community guide.</h2>
               </div>
-              <div className="space-y-6 text-lg leading-9 text-[#1F3E3D]/74">
+              <div className="space-y-5 text-base leading-8 text-[#1F3E3D]/74 md:space-y-6 md:text-lg md:leading-9">
                 {(listing.detailsParagraphs || [listing.details]).slice(0, 3).map(paragraph => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
@@ -445,12 +445,12 @@ const ListingPage = ({ slug }) => {
           </div>
         </section>
 
-        <section className="bg-[#F8F4EC] px-6 py-16 md:px-12 lg:px-14">
+        <section className="bg-[#F8F4EC] px-4 py-10 md:px-12 md:py-16 lg:px-14">
           <div className="mx-auto max-w-7xl">
             <div className="page-reveal grid gap-8 md:grid-cols-[0.58fr_1fr] md:items-end">
               <div>
                 <GuideLabel>Related reading</GuideLabel>
-                <h2 className="mt-3 font-serifDisplay text-4xl font-light leading-tight md:text-6xl">Guides, locations, and nearby listings.</h2>
+                <h2 className="mt-3 font-serifDisplay text-3xl font-light leading-tight md:text-6xl">Guides, locations, and nearby listings.</h2>
               </div>
               <p className="text-base leading-8 text-[#1F3E3D]/68">This listing sits inside a broader category, so the next step can be a practical guide, a nearby service, or another business in the same section.</p>
             </div>
