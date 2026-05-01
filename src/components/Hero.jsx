@@ -21,13 +21,16 @@ const Hero = () => {
       targetScrollPos = window.scrollY;
     };
 
+    const viewportHeight = () => window.visualViewport?.height || window.innerHeight || document.documentElement.clientHeight;
+
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     const renderAnimation = () => {
-      scrollPos += (targetScrollPos - scrollPos) * 0.08;
+      const isMobile = window.innerWidth < 768;
+      scrollPos += (targetScrollPos - scrollPos) * (isMobile ? 0.16 : 0.08);
 
       if (trackRef.current) {
-        const trackHeight = trackRef.current.offsetHeight - window.innerHeight;
+        const trackHeight = trackRef.current.offsetHeight - viewportHeight();
         let progress = 0;
 
         if (trackHeight > 0) {
@@ -36,8 +39,8 @@ const Hero = () => {
 
         // 1. Camera Push
         const easeZoom = Math.pow(progress, 3);
-        const scale = 1 + easeZoom * 25;
-        const translateY = easeZoom * 15;
+        const scale = 1 + easeZoom * (isMobile ? 16 : 25);
+        const translateY = easeZoom * (isMobile ? 9 : 15);
         if (sceneRef.current) sceneRef.current.style.transform = `scale(${scale}) translateY(${translateY}%)`;
 
         // 2. Door Swinging Open
@@ -46,7 +49,7 @@ const Hero = () => {
           if (progress > 0.05) {
             let doorProgress = Math.min((progress - 0.05) / 0.6, 1);
             const easeDoor = Math.sin((doorProgress * Math.PI) / 2);
-            angle = -(easeDoor * 115);
+            angle = -(easeDoor * (isMobile ? 98 : 115));
           }
           doorPanelRef.current.style.transform = `rotateY(${angle}deg) translateZ(2px)`;
         }
@@ -99,8 +102,8 @@ const Hero = () => {
   }, [searchOpen]);
 
   return (
-    <div className="z-10 bg-[#0B101A] w-full h-[300vh] relative" id="scroll-track" ref={trackRef}>
-      <div className="sticky overflow-hidden [perspective:1200px] w-full h-screen top-0 right-0 bottom-0 left-0">
+    <div className="z-10 bg-[#0B101A] w-full h-[230svh] md:h-[300vh] relative" id="scroll-track" ref={trackRef}>
+      <div className="sticky overflow-hidden [perspective:1200px] w-full h-[100svh] top-0 right-0 bottom-0 left-0 md:h-screen">
         
         {/* 3D Scene Wrapper */}
         <div 
@@ -126,7 +129,7 @@ const Hero = () => {
           </div>
 
           {/* The Door Asset */}
-          <div className="sm:w-[320px] sm:h-[560px] [transform-style:preserve-3d] group xs:w-[260px] xs:h-[460px] -translate-y-8 sm:-translate-y-12 w-[220px] h-[400px] relative">
+          <div className="sm:w-[320px] sm:h-[560px] [transform-style:preserve-3d] group xs:w-[260px] xs:h-[460px] -translate-y-2 sm:-translate-y-12 w-[210px] h-[380px] relative md:-translate-y-8">
             
             {/* Original Aura portal visual */}
             <div 
@@ -328,7 +331,7 @@ const Hero = () => {
           </header>
 
           {/* Hero Title */}
-          <div className="pointer-events-auto max-w-2xl absolute left-4 sm:left-6 md:left-24" style={{ top: 'clamp(18%, 22%, 28%)' }}>
+          <div className="pointer-events-auto max-w-2xl absolute left-4 sm:left-6 md:left-24" style={{ top: 'clamp(7rem, 18svh, 11rem)' }}>
             <h1 className="leading-[1.1] sm:text-4xl md:text-6xl text-3xl font-normal text-white tracking-tight drop-shadow-md">
               Beyond this <span className="font-light italic">Door</span> lies<br />Ummah Directory
             </h1>

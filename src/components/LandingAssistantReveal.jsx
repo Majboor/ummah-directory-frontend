@@ -63,7 +63,7 @@ const LandingAssistantReveal = () => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('is-visible');
       });
-    }, { threshold: 0.18 });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
     if (mobileCardRef.current) mobileObserver.observe(mobileCardRef.current);
 
     const update = () => {
@@ -151,12 +151,12 @@ const LandingAssistantReveal = () => {
 
   return (
     <section ref={sectionRef} className="assistant-gateway relative z-20 bg-[#F4F4F5] md:h-[260vh]" style={{ '--gateway-wash': 0 }}>
-      <div className="flex min-h-[140vh] items-start justify-center overflow-hidden px-4 pb-16 pt-[42vh] md:sticky md:top-0 md:h-screen md:min-h-0 md:items-center md:px-12 md:py-8">
+      <div className="flex min-h-[105svh] items-start justify-center overflow-hidden px-4 pb-10 pt-[18svh] md:sticky md:top-0 md:h-screen md:min-h-0 md:items-center md:px-12 md:py-8">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(31,62,61,0.10),transparent_46%)] opacity-[var(--gateway-wash)]"></div>
         <div className="pointer-events-none absolute bottom-8 left-1/2 h-1 w-14 -translate-x-1/2 rounded-full bg-[#1F3E3D]/35"></div>
 
         <div ref={(node) => { cardRef.current = node; mobileCardRef.current = node; }} className="assistant-flip-card mobile-assistant-card relative w-full max-w-7xl border border-[#1F3E3D]/12 bg-[#ECEFEB] shadow-[0_30px_90px_rgba(31,62,61,0.14)] will-change-transform">
-          <div className="grid min-h-[calc(100vh-7rem)] md:min-h-[68vh] lg:grid-cols-[360px_minmax(0,1fr)]">
+          <div className="grid min-h-[auto] md:min-h-[68vh] lg:grid-cols-[360px_minmax(0,1fr)]">
             <aside className="border-b border-[#1F3E3D]/12 p-4 lg:border-b-0 lg:border-r lg:p-8">
               <div className="flex items-center gap-3 md:gap-4">
                 <span className="grid h-10 w-10 shrink-0 place-items-center bg-[#1F3E3D] text-white md:h-12 md:w-12">
@@ -187,8 +187,8 @@ const LandingAssistantReveal = () => {
               </div>
             </aside>
 
-            <div className="flex min-h-[48vh] flex-col md:min-h-[68vh]">
-              <div ref={transcriptRef} className="max-h-[52vh] flex-1 space-y-4 overflow-y-auto p-4 md:max-h-none md:space-y-5 md:p-8">
+            <div className="flex min-h-[52svh] flex-col md:min-h-[68vh]">
+              <div ref={transcriptRef} className="max-h-[46svh] flex-1 space-y-4 overflow-y-auto p-4 md:max-h-none md:space-y-5 md:p-8">
                 {messages.map((message, index) => (
                   <div key={`${message.role}-${index}`} className={`assistant-message-${Math.min(index, 2)} ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
                     <div className={`inline-block max-w-[92%] px-4 py-3 text-sm leading-6 md:max-w-[86%] md:px-5 md:py-4 md:text-base md:leading-8 ${message.role === 'user' ? 'bg-[#1F3E3D] text-white' : 'bg-[#F8F8F8] text-[#1F3E3D]/78'}`}>
