@@ -3,6 +3,9 @@ import { categories, sourceMeta, visibleListings } from '../data/travelData';
 import SafeImage from './SafeImage';
 
 const featuredCategorySlugs = ['food-and-beverage', 'mosque-musalla', 'education'];
+const categorySpotlightImages = {
+  'food-and-beverage': 'https://ummahdirectory.com.au/wp-content/uploads/2024/06/graz6-773x1024.jpeg',
+};
 
 const Spotlight = () => {
   const featuredCategories = featuredCategorySlugs
@@ -25,7 +28,7 @@ const Spotlight = () => {
         {featuredCategories.map(category => (
           <a key={category.slug} href={`/category/${category.slug}`} className="bg-white rounded-xl overflow-hidden shadow-[0_8px_30px_rgba(31,62,61,0.04)] flex flex-col group border border-slate-200/60 hover:shadow-[0_12px_40px_rgba(31,62,61,0.08)] transition-all duration-500 hover:-translate-y-1">
             <div className="relative h-48 md:h-52 overflow-hidden bg-slate-100">
-              <SafeImage src={category.image} alt={category.title} className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105" />
+              <SafeImage src={categorySpotlightImages[category.slug] || category.image} alt={category.title} className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
             </div>
             <div className="p-6 md:p-8 flex flex-col flex-grow relative bg-white">
