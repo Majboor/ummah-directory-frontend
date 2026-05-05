@@ -96,15 +96,18 @@
 }
 
 .hidden-gems-scroll {
-  height: auto;
+  min-height: 100svh;
 }
 
 .hidden-gems-sticky {
-  position: relative;
+  position: sticky;
+  top: 0;
+  min-height: 100svh;
 }
 
 .hidden-gems-viewport {
-  overflow-x: auto;
+  overflow: hidden !important;
+  touch-action: pan-y;
 }
 
 .hidden-gems-rail {
@@ -112,19 +115,8 @@
 }
 
 @media (min-width: 768px) {
-  .hidden-gems-scroll {
-    min-height: 100vh;
-  }
-
   .hidden-gems-sticky {
-    position: sticky;
-    top: 0;
     height: 100vh;
-  }
-
-  .hidden-gems-viewport {
-    overflow: hidden !important;
-    touch-action: pan-y;
   }
 }
 
