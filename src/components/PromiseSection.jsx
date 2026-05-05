@@ -27,7 +27,7 @@ const PromiseSection = () => {
   }, []);
 
   return (
-    <section className="flex flex-col lg:gap-y-24 bg-center bg-[#0B101A] w-full bg-[url('https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/09fd4820-ff21-47a8-b915-20b74cb1a37a_3840w.png')] bg-cover z-20 border-white/5 border-t pt-20 pb-24 relative scale-100 gap-y-16">
+    <section className="flex flex-col lg:gap-y-24 bg-center bg-[#0B101A] w-full md:bg-[url('https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/09fd4820-ff21-47a8-b915-20b74cb1a37a_3840w.png')] bg-cover z-20 border-white/5 border-t pt-20 pb-24 relative scale-100 gap-y-16">
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 w-full max-w-7xl mx-auto px-6 md:px-12 items-center">
         <div className="w-full lg:w-[45%] flex flex-col gap-8 pt-2 shrink-0 z-10">
           <div className="flex items-center gap-3">

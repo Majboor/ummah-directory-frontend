@@ -8,8 +8,13 @@ const smoothstep = value => {
   return x * x * (3 - 2 * x);
 };
 
+const DESKTOP_HERO_IMAGE = 'https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/1fb0d000-28e3-4a63-9571-a768c099c566_3840w.png';
+const MOBILE_HERO_IMAGE = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=75&w=900&auto=format&fit=crop';
+const PORTAL_IMAGE = 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=75&w=900&auto=format&fit=crop';
+
 const Hero = () => {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(() => window.innerWidth < 768);
   const trackRef = useRef(null);
   const sceneRef = useRef(null);
   const doorPanelRef = useRef(null);
@@ -17,6 +22,14 @@ const Hero = () => {
   const portalContentRef = useRef(null);
   const portalGlowRef = useRef(null);
   const whiteoutRef = useRef(null);
+  const heroCategories = isMobileViewport ? categories.slice(0, 5) : categories;
+
+  useEffect(() => {
+    const updateViewportMode = () => setIsMobileViewport(window.innerWidth < 768);
+    updateViewportMode();
+    window.addEventListener('resize', updateViewportMode, { passive: true });
+    return () => window.removeEventListener('resize', updateViewportMode);
+  }, []);
 
   useEffect(() => {
     let animationFrameId = 0;
@@ -38,9 +51,26 @@ const Hero = () => {
 
       const isMobile = window.innerWidth < 768;
       const zoomProgress = smoothstep(progress * 0.9);
-      const doorProgress = smoothstep((progress - 0.08) / 0.48);
       const revealProgress = smoothstep((progress - 0.12) / 0.34);
       const exitProgress = smoothstep((progress - 0.7) / 0.28);
+
+      if (isMobile) {
+        if (sceneRef.current) sceneRef.current.style.transform = 'translate3d(0, 0, 0)';
+        if (doorPanelRef.current) doorPanelRef.current.style.transform = 'translateZ(2px)';
+        if (portalContentRef.current && portalGlowRef.current) {
+          portalContentRef.current.style.opacity = '0.82';
+          portalGlowRef.current.style.opacity = '0.18';
+        }
+        if (uiLayerRef.current) {
+          const uiHide = smoothstep(progress / 0.58);
+          uiLayerRef.current.style.opacity = (1 - uiHide).toFixed(3);
+          uiLayerRef.current.style.transform = `translate3d(0, ${(-24 * uiHide).toFixed(2)}px, 0)`;
+        }
+        if (whiteoutRef.current) whiteoutRef.current.style.opacity = exitProgress.toFixed(3);
+        return;
+      }
+
+      const doorProgress = smoothstep((progress - 0.08) / 0.48);
 
       if (sceneRef.current) {
         const scale = 1 + zoomProgress * (isMobile ? 0.62 : 0.92);
@@ -102,7 +132,7 @@ const Hero = () => {
   }, [searchOpen]);
 
   return (
-    <div className="z-10 bg-[#0B101A] w-full h-[150svh] md:h-[170vh] relative" id="scroll-track" ref={trackRef}>
+    <div className="z-10 bg-[#0B101A] w-full h-[118svh] md:h-[170vh] relative" id="scroll-track" ref={trackRef}>
       <div className="sticky overflow-hidden [perspective:1200px] w-full h-[100svh] top-0 right-0 bottom-0 left-0 md:h-screen">
         
         {/* 3D Scene Wrapper */}
@@ -114,17 +144,17 @@ const Hero = () => {
           {/* Background Image Container */}
           <div className="pointer-events-none z-0 absolute top-0 right-0 bottom-0 left-0">
             <SafeImage
-              src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/1fb0d000-28e3-4a63-9571-a768c099c566_3840w.png"
+              src={isMobileViewport ? MOBILE_HERO_IMAGE : DESKTOP_HERO_IMAGE}
               alt="Background Environment"
-              className="opacity-60 mix-blend-overlay w-full h-full object-cover"
+              className="opacity-70 md:opacity-60 md:mix-blend-overlay w-full h-full object-cover"
               loading="eager"
               fetchPriority="high"
-              data-critical-image="true"
+              optimizedWidth={isMobileViewport ? 900 : 1400}
             />
           </div>
 
           {/* Nature's Greenery Surface */}
-          <div className="origin-top [transform:rotateX(80deg)_translateZ(-100px)] bg-gradient-to-b from-[#52525B]/95 to-[#18181B] w-[200%] h-[100%] border-[#A1A1AA]/30 border-t absolute top-[60%] left-[-50%] drop-shadow-2xl backdrop-blur-md">
+          <div className="hidden md:block origin-top [transform:rotateX(80deg)_translateZ(-100px)] bg-gradient-to-b from-[#52525B]/95 to-[#18181B] w-[200%] h-[100%] border-[#A1A1AA]/30 border-t absolute top-[60%] left-[-50%] drop-shadow-2xl backdrop-blur-md">
             <div className="bg-center opacity-100 mix-blend-soft-light bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/05b11cf5-028b-41dd-9248-8b56e028f570_3840w.png)] bg-contain absolute top-0 right-0 bottom-0 left-0 shadow-2xl translate-y-4"></div>
           </div>
 
@@ -132,14 +162,14 @@ const Hero = () => {
           <div className="sm:w-[320px] sm:h-[560px] [transform-style:preserve-3d] group xs:w-[260px] xs:h-[460px] -translate-y-2 sm:-translate-y-12 w-[210px] h-[380px] relative md:-translate-y-8">
             
             {/* Original Aura portal visual */}
-            <div 
-              className="bg-center will-change-[opacity] opacity-25 bg-cover rounded-t-[144px] absolute top-[8px] right-[8px] bottom-[8px] left-[8px]" 
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=1968&auto=format&fit=crop')" }} 
+            <div
+              className="bg-center will-change-[opacity] opacity-25 rounded-t-[144px] absolute top-[8px] right-[8px] bottom-[8px] left-[8px] overflow-hidden"
               id="portal-content"
               ref={portalContentRef}
             >
+              <SafeImage src={PORTAL_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" optimizedWidth={700} />
               <div className="bg-gradient-to-t from-black/70 via-black/20 to-transparent rounded-t-[144px] absolute top-0 right-0 bottom-0 left-0"></div>
-              <div className="bg-[#86A873]/30 opacity-0 mix-blend-screen rounded-t-[144px] absolute top-0 right-0 bottom-0 left-0 blur-xl" id="portal-glow" ref={portalGlowRef}></div>
+              <div className="hidden md:block bg-[#86A873]/30 opacity-0 mix-blend-screen rounded-t-[144px] absolute top-0 right-0 bottom-0 left-0 blur-xl" id="portal-glow" ref={portalGlowRef}></div>
             </div>
 
             {/* Realistic Stone Door Frame */}
@@ -375,9 +405,9 @@ const Hero = () => {
             </div>
 
             <div className="flex xl:w-[700px] overflow-x-auto hide-scrollbar gap-4 sm:gap-6 snap-x snap-mandatory -mx-2 w-full pt-2 sm:pt-4 pr-2 pb-2 sm:pb-4 pl-2">
-              {categories.map((card) => (
+              {heroCategories.map((card) => (
                 <a key={card.slug} href={`/category/${card.slug}`} className="snap-start shrink-0 w-[200px] sm:w-[260px] md:w-[300px] h-[160px] sm:h-[190px] md:h-[220px] rounded-2xl overflow-hidden relative group cursor-pointer shadow-2xl border border-white/10">
-                  <SafeImage src={card.image} className="transition-transform duration-[1.5s] ease-out group-hover:scale-110 w-full h-full object-cover" alt={card.title} />
+                  <SafeImage src={card.image} className="transition-transform duration-[1.5s] ease-out group-hover:scale-110 w-full h-full object-cover" alt={card.title} optimizedWidth={isMobileViewport ? 480 : 900} />
                   <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-[#1F3E3D]/90 via-[#1F3E3D]/20 to-transparent opacity-80 absolute top-0 right-0 bottom-0 left-0"></div>
                   <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-black/40 backdrop-blur-md rounded-full p-2 border border-white/10 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                     <iconify-icon icon="lucide:arrow-right" class="w-4 h-4 text-white"></iconify-icon>
