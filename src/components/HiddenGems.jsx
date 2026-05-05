@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { visibleListings } from '../data/travelData';
-import { FALLBACK_IMAGE } from './SafeImage';
+import SafeImage from './SafeImage';
 
 const HiddenGems = () => {
   const sectionRef = useRef(null);
@@ -13,14 +13,15 @@ const HiddenGems = () => {
     if (!section || !rail) return undefined;
 
     let frame = 0;
+    let trackHeight = Math.max(window.innerHeight, window.visualViewport?.height || 0);
 
     const updateRail = () => {
       frame = 0;
       const viewport = rail.parentElement;
       const overflow = viewport ? Math.max(0, rail.scrollWidth - viewport.clientWidth) : 0;
 
-      section.style.height = `${window.innerHeight + overflow}px`;
-      const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
+      section.style.height = `${trackHeight + overflow}px`;
+      const scrollable = Math.max(1, section.offsetHeight - trackHeight);
       const progress = Math.min(Math.max((window.scrollY - section.offsetTop) / scrollable, 0), 1);
 
       rail.style.transform = `translate3d(${-overflow * progress}px, 0, 0)`;
@@ -31,10 +32,16 @@ const HiddenGems = () => {
       frame = window.requestAnimationFrame(updateRail);
     };
 
+    const handleResize = () => {
+      trackHeight = Math.max(window.innerHeight, window.visualViewport?.height || 0);
+      requestUpdate();
+    };
+
     updateRail();
     window.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', requestUpdate);
-    window.addEventListener('load', requestUpdate);
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('load', handleResize);
+    window.visualViewport?.addEventListener('resize', handleResize);
     const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(requestUpdate) : null;
     observer?.observe(rail);
     observer?.observe(rail.parentElement);
@@ -43,8 +50,9 @@ const HiddenGems = () => {
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', requestUpdate);
-      window.removeEventListener('resize', requestUpdate);
-      window.removeEventListener('load', requestUpdate);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('load', handleResize);
+      window.visualViewport?.removeEventListener('resize', handleResize);
       observer?.disconnect();
     };
   }, []);
@@ -69,7 +77,7 @@ const HiddenGems = () => {
             <div ref={railRef} className="hidden-gems-rail flex w-max snap-x snap-mandatory will-change-transform md:snap-none" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)' }}>
             {gems.map(gem => (
               <a key={gem.slug} href={`/listing/${gem.slug}`} style={{ width: 'clamp(200px, 55vw, 300px)', height: 'clamp(320px, 45vh, 480px)', flexShrink: 0 }} aria-label={`Open ${gem.title}`} className="relative block snap-start overflow-hidden rounded-2xl border border-black/5 bg-[#1A1A1A] shadow-xl group cursor-pointer">
-                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105" style={{ backgroundImage: `url('${gem.image || FALLBACK_IMAGE}'), url('${FALLBACK_IMAGE}')` }}></div>
+                <SafeImage src={gem.image} alt={gem.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105" loading="eager" optimizedWidth={640} />
                 <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 via-black/20 to-transparent pointer-events-none"></div>
                 <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none transition-opacity duration-500 group-hover:opacity-90"></div>
                 

@@ -96,22 +96,28 @@
 }
 
 .hidden-gems-scroll {
+  min-height: 100vh;
   min-height: 100svh;
 }
 
 .hidden-gems-sticky {
   position: sticky;
   top: 0;
+  min-height: 100vh;
   min-height: 100svh;
+  transform: translateZ(0);
 }
 
 .hidden-gems-viewport {
   overflow: hidden !important;
   touch-action: pan-y;
+  contain: layout paint;
 }
 
 .hidden-gems-rail {
   transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 @media (min-width: 768px) {
