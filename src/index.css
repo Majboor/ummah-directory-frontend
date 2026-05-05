@@ -128,12 +128,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hidden-gems-rail {
-    transform: none !important;
-  }
-}
-
 @keyframes spin-earth {
   0% {
     background-position: 0 0;

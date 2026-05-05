@@ -12,7 +12,6 @@ const HiddenGems = () => {
     const rail = railRef.current;
     if (!section || !rail) return undefined;
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const desktop = window.matchMedia('(min-width: 768px)');
     let frame = 0;
 
@@ -21,17 +20,15 @@ const HiddenGems = () => {
       const viewport = rail.parentElement;
       const overflow = viewport ? Math.max(0, rail.scrollWidth - viewport.clientWidth) : 0;
 
-      if (reduceMotion.matches || !desktop.matches) {
+      if (!desktop.matches) {
         section.style.height = '';
         rail.style.transform = '';
         return;
       }
 
       section.style.height = `${window.innerHeight + overflow}px`;
-
-      const rect = section.getBoundingClientRect();
       const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
-      const progress = scrollable > 0 ? Math.min(Math.max(-rect.top / scrollable, 0), 1) : 0;
+      const progress = Math.min(Math.max((window.scrollY - section.offsetTop) / scrollable, 0), 1);
 
       rail.style.transform = `translate3d(${-overflow * progress}px, 0, 0)`;
     };
@@ -44,15 +41,20 @@ const HiddenGems = () => {
     updateRail();
     window.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate);
+    window.addEventListener('load', requestUpdate);
     desktop.addEventListener('change', requestUpdate);
-    reduceMotion.addEventListener('change', requestUpdate);
+    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(requestUpdate) : null;
+    observer?.observe(rail);
+    observer?.observe(rail.parentElement);
+    document.fonts?.ready?.then(requestUpdate).catch(() => {});
 
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', requestUpdate);
       window.removeEventListener('resize', requestUpdate);
+      window.removeEventListener('load', requestUpdate);
       desktop.removeEventListener('change', requestUpdate);
-      reduceMotion.removeEventListener('change', requestUpdate);
+      observer?.disconnect();
     };
   }, []);
 
