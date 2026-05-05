@@ -2,14 +2,6 @@ import { useEffect, useState } from 'react';
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-const waitForWindowLoad = () => new Promise(resolve => {
-  if (document.readyState === 'complete') {
-    resolve();
-    return;
-  }
-  window.addEventListener('load', resolve, { once: true });
-});
-
 const waitForFonts = () => {
   if (!document.fonts?.ready) return Promise.resolve();
   return document.fonts.ready.catch(() => undefined);
@@ -50,9 +42,10 @@ const AppLoader = () => {
     const loader = document.getElementById('app-loader');
 
     Promise.race([
-      Promise.all([waitForWindowLoad(), waitForFonts(), waitForCriticalImages(), wait(900)]),
-      wait(5200),
-    ]).then(() => {
+      Promise.all([waitForFonts(), waitForCriticalImages(), wait(700)]),
+      wait(1800),
+    ])
+      .then(() => {
       if (cancelled) return;
       setReady(true);
       if (loader) {
