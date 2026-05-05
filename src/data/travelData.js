@@ -289,7 +289,7 @@ const buildRealityCheck = listing => {
 
 const fallbackImageForListing = listing => {
   const slug = findPrimaryCategorySlug(listing);
-  return categoryImage(slug);
+  return categoryImageFallbacks[slug] || categoryImageFallbacks.default;
 };
 
 const mapListing = listing => {
@@ -308,7 +308,12 @@ const mapListing = listing => {
   const openingHours = Array.isArray(listing.opening_hours) && listing.opening_hours.length
     ? listing.opening_hours.map(item => `${item.day ? `${item.day}: ` : ''}${item.hours || item}`).filter(Boolean)
     : ['Opening hours: Confirm with business', 'Details: confirm before visiting', `Updated: ${listing.modified || listing.date || 'Not available'}`];
-  const gallery = [image, ...(listing.gallery || []), ...galleryPool, categoryImageFallbacks.default]
+  const gallery = [
+    image,
+    ...(listing.gallery || []),
+    ...(listing.image ? galleryPool : []),
+    categoryImageFallbacks.default,
+  ]
     .filter(Boolean)
     .filter((item, index, arr) => arr.indexOf(item) === index)
     .slice(0, 6);
