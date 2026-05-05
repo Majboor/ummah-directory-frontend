@@ -95,6 +95,45 @@
   }
 }
 
+.hidden-gems-scroll {
+  height: auto;
+}
+
+.hidden-gems-sticky {
+  position: relative;
+}
+
+.hidden-gems-viewport {
+  overflow-x: auto;
+}
+
+.hidden-gems-rail {
+  transform: translate3d(0, 0, 0);
+}
+
+@media (min-width: 768px) {
+  .hidden-gems-scroll {
+    height: 360vh;
+  }
+
+  .hidden-gems-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .hidden-gems-viewport {
+    overflow: hidden !important;
+    touch-action: pan-y;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hidden-gems-rail {
+    transform: none !important;
+  }
+}
+
 @keyframes spin-earth {
   0% {
     background-position: 0 0;

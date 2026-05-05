@@ -1,13 +1,61 @@
-import React from 'react';
-import { listings } from '../data/travelData';
+import React, { useEffect, useRef } from 'react';
+import { visibleListings } from '../data/travelData';
 import { FALLBACK_IMAGE } from './SafeImage';
 
 const HiddenGems = () => {
-  const gems = listings.filter(item => item.image).slice(0, 22);
+  const sectionRef = useRef(null);
+  const railRef = useRef(null);
+  const gems = visibleListings.filter(item => item.image).slice(0, 22);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const rail = railRef.current;
+    if (!section || !rail) return undefined;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const desktop = window.matchMedia('(min-width: 768px)');
+    let frame = 0;
+
+    const updateRail = () => {
+      frame = 0;
+
+      if (reduceMotion.matches || !desktop.matches) {
+        rail.style.transform = '';
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      const scrollable = section.offsetHeight - window.innerHeight;
+      const progress = scrollable > 0 ? Math.min(Math.max(-rect.top / scrollable, 0), 1) : 0;
+      const overflow = Math.max(0, rail.scrollWidth - rail.parentElement.clientWidth);
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      rail.style.transform = `translate3d(${-overflow * eased}px, 0, 0)`;
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateRail);
+    };
+
+    updateRail();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+    desktop.addEventListener('change', requestUpdate);
+    reduceMotion.addEventListener('change', requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', requestUpdate);
+      window.removeEventListener('resize', requestUpdate);
+      desktop.removeEventListener('change', requestUpdate);
+      reduceMotion.removeEventListener('change', requestUpdate);
+    };
+  }, []);
 
   return (
-    <div className="relative z-20 h-auto w-full bg-[#F4F4F5] text-black" id="hidden-gems-section">
-      <div className="flex w-full flex-col justify-center overflow-hidden py-14 md:min-h-screen md:py-20">
+    <div ref={sectionRef} className="hidden-gems-scroll relative z-20 h-auto w-full bg-[#F4F4F5] text-black" id="hidden-gems-section">
+      <div className="hidden-gems-sticky flex w-full flex-col justify-center overflow-hidden py-14 md:py-20">
         <main className="flex flex-col w-full" style={{ gap: 'clamp(1.5rem, 3vh, 2.5rem)' }}>
           <div className="flex flex-col md:flex-row md:items-end md:pr-12 md:pl-12 shrink-0 pr-6 pl-6 items-start justify-between gap-4 md:gap-0">
             <div className="md:w-72 lg:w-80 leading-relaxed order-2 md:order-1 hidden sm:block text-xs font-light text-[#1F3E3D]/70 w-full">
@@ -21,8 +69,9 @@ const HiddenGems = () => {
             </div>
           </div>
 
-          <div className="hide-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain pl-6 md:pl-12" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)', paddingRight: '1.5rem', paddingBottom: '1rem' }} id="horizontal-scroll-container">
-            {gems.map((gem, index) => (
+          <div className="hidden-gems-viewport hide-scrollbar w-full overflow-x-auto overscroll-x-contain pl-6 md:pl-12" style={{ paddingRight: '1.5rem', paddingBottom: '1rem' }} id="horizontal-scroll-container">
+            <div ref={railRef} className="hidden-gems-rail flex w-max snap-x snap-mandatory will-change-transform md:snap-none" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)' }}>
+            {gems.map(gem => (
               <a key={gem.slug} href={`/listing/${gem.slug}`} style={{ width: 'clamp(200px, 55vw, 300px)', height: 'clamp(320px, 45vh, 480px)', flexShrink: 0 }} aria-label={`Open ${gem.title}`} className="relative block snap-start overflow-hidden rounded-2xl border border-black/5 bg-[#1A1A1A] shadow-xl group cursor-pointer">
                 <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105" style={{ backgroundImage: `url('${gem.image || FALLBACK_IMAGE}'), url('${FALLBACK_IMAGE}')` }}></div>
                 <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 via-black/20 to-transparent pointer-events-none"></div>
@@ -66,6 +115,7 @@ const HiddenGems = () => {
                 </div>
               </a>
             ))}
+            </div>
           </div>
         </main>
       </div>
