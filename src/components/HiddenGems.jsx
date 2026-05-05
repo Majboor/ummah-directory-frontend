@@ -18,19 +18,22 @@ const HiddenGems = () => {
 
     const updateRail = () => {
       frame = 0;
+      const viewport = rail.parentElement;
+      const overflow = viewport ? Math.max(0, rail.scrollWidth - viewport.clientWidth) : 0;
 
       if (reduceMotion.matches || !desktop.matches) {
+        section.style.height = '';
         rail.style.transform = '';
         return;
       }
 
-      const rect = section.getBoundingClientRect();
-      const scrollable = section.offsetHeight - window.innerHeight;
-      const progress = scrollable > 0 ? Math.min(Math.max(-rect.top / scrollable, 0), 1) : 0;
-      const overflow = Math.max(0, rail.scrollWidth - rail.parentElement.clientWidth);
-      const eased = 1 - Math.pow(1 - progress, 3);
+      section.style.height = `${window.innerHeight + overflow}px`;
 
-      rail.style.transform = `translate3d(${-overflow * eased}px, 0, 0)`;
+      const rect = section.getBoundingClientRect();
+      const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
+      const progress = scrollable > 0 ? Math.min(Math.max(-rect.top / scrollable, 0), 1) : 0;
+
+      rail.style.transform = `translate3d(${-overflow * progress}px, 0, 0)`;
     };
 
     const requestUpdate = () => {

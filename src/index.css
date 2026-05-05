@@ -113,7 +113,7 @@
 
 @media (min-width: 768px) {
   .hidden-gems-scroll {
-    height: 360vh;
+    min-height: 100vh;
   }
 
   .hidden-gems-sticky {
